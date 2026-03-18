@@ -24,7 +24,6 @@ export default function Home() {
         <div className={styles.content}>
           <header className={styles.hero}>
             <p className={styles.kicker}>Workout Timer</p>
-            <h2 className={styles.title}>BODYWEIGHT</h2>
           </header>
           <nav className={styles.grid} aria-label="Primary navigation">
             {cards.map((card) => (
