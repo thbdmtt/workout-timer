@@ -19,12 +19,12 @@ export default function Home() {
 
   return (
     <>
-      <NavBar title="Lafay" />
+      <NavBar title="Bodyweight Workout" />
       <main className={styles.page}>
         <div className={styles.content}>
           <header className={styles.hero}>
             <p className={styles.kicker}>Workout Timer</p>
-            <h2 className={styles.title}>LAFAY</h2>
+            <h2 className={styles.title}>BODYWEIGHT</h2>
           </header>
           <nav className={styles.grid} aria-label="Primary navigation">
             {cards.map((card) => (

@@ -1,6 +1,6 @@
-# Lafay App
+# Bodyweight Workout App
 
-Lafay App is a mobile-first workout timer built with Vite, React and React Router.
+Bodyweight Workout App is a mobile-first workout timer built with Vite, React and React Router.
 
 It is designed as a small installable PWA for workout sessions, with:
 
@@ -24,7 +24,7 @@ No backend, no database and no external state management are used. App state liv
 
 ### Home
 
-- `LAFAY` landing screen
+- `BODYWEIGHT` landing screen
 - 4 navigation cards
 - Responsive layout: single column on mobile, 2x2 grid on wider screens
 
@@ -125,7 +125,7 @@ npx serve dist
 ## Project structure
 
 ```text
-lafay-app/
+bodyweight-workout-app/
 ├── public/
 │   ├── alarm.mp3
 │   ├── icons/

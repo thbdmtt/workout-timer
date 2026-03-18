@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 const manifest = {
-  name: 'Lafay App',
-  short_name: 'Lafay',
+  name: 'Bodyweight Workout App',
+  short_name: 'Bodyweight',
   description: 'Workout timer application',
   icons: [
     {
