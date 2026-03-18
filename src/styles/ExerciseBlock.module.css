@@ -1,0 +1,12 @@
+.block {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: 32px;
+}
+
+.name {
+  color: var(--color-muted);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

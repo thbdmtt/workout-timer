@@ -1,0 +1,36 @@
+.row {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.button:focus-visible {
+  outline: 1px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.indicator {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--color-muted);
+  border-radius: 999px;
+  background: transparent;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.checked {
+  border-color: var(--color-text);
+  background: var(--color-text);
+  transform: scale(1.02);
+}

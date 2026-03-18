@@ -1,0 +1,83 @@
+.page {
+  min-height: 100vh;
+  padding: calc(56px + var(--space-4)) var(--space-3) calc(96px + var(--space-5));
+}
+
+.content {
+  width: min(100%, 42rem);
+  margin: 0 auto;
+  display: grid;
+  gap: var(--space-5);
+}
+
+.timerSection {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+}
+
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.presetButton {
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text);
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    background-color var(--duration-base) var(--ease-out);
+}
+
+.presetButton:hover,
+.presetButton:focus-visible {
+  border-color: var(--color-text);
+}
+
+.presetButton:focus-visible {
+  outline: 1px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.exerciseList {
+  display: grid;
+}
+
+.resetButton {
+  position: fixed;
+  right: 24px;
+  bottom: 32px;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-danger);
+  font-size: 1.5rem;
+  line-height: 1;
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out);
+}
+
+.resetButton:hover,
+.resetButton:focus-visible {
+  border-color: var(--color-text);
+}
+
+.resetButton:focus-visible {
+  outline: 1px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.resetButton:active {
+  transform: scale(0.96);
+}

@@ -1,0 +1,88 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  align-items: center;
+  padding: calc(56px + var(--space-5)) var(--space-3) var(--space-5);
+}
+
+.content {
+  width: min(100%, 56rem);
+  margin: 0 auto;
+  display: grid;
+  gap: var(--space-5);
+}
+
+.hero {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: center;
+  text-align: center;
+}
+
+.kicker {
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 12vw, 72px);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  padding-left: 0.3em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+}
+
+.card {
+  min-width: 0;
+  min-height: 108px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out);
+}
+
+.card:hover,
+.card:focus-visible {
+  border-color: var(--color-text);
+  transform: scale(1.01);
+}
+
+.card:focus-visible {
+  outline: 1px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.cardLabel {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.arrow {
+  flex-shrink: 0;
+  color: var(--color-muted);
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+@media (min-width: 720px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
