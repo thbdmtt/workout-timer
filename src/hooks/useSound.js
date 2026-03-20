@@ -1,68 +1,120 @@
 import { useCallback, useEffect, useRef } from 'react'
 
+function decodeAudioBuffer(audioContext, arrayBuffer) {
+  try {
+    const decodePromise = audioContext.decodeAudioData(arrayBuffer.slice(0))
+
+    if (decodePromise?.then) {
+      return decodePromise
+    }
+  } catch {
+    // Older Safari expects the callback form of decodeAudioData.
+  }
+
+  return new Promise((resolve, reject) => {
+    audioContext.decodeAudioData(arrayBuffer, resolve, reject)
+  })
+}
+
 export function useSound(src) {
-  const audioRef = useRef(null)
+  const audioContextRef = useRef(null)
+  const gainNodeRef = useRef(null)
+  const audioBufferRef = useRef(null)
 
   useEffect(() => {
-    if (typeof Audio !== 'function') {
+    if (typeof document === 'undefined' || typeof window === 'undefined') {
       return undefined
     }
 
-    const audio = new Audio(src)
-    audio.volume = 0.5
-    audio.preload = 'auto'
-    audioRef.current = audio
+    let isDisposed = false
+    const abortController =
+      typeof AbortController === 'function' ? new AbortController() : null
 
-    return () => {
-      audio.pause()
-      audio.currentTime = 0
+    async function initializeAudio() {
+      document.removeEventListener('pointerdown', initializeAudio)
 
-      if (audioRef.current === audio) {
-        audioRef.current = null
-      }
-    }
-  }, [src])
+      const AudioContextClass =
+        window.AudioContext || window.webkitAudioContext
 
-  useEffect(() => {
-    if (typeof document === 'undefined') {
-      return undefined
-    }
-
-    function unlockAudio() {
-      document.removeEventListener('pointerdown', unlockAudio)
-      document.removeEventListener('touchstart', unlockAudio)
-
-      const audio = audioRef.current
-
-      if (!audio) {
+      if (typeof AudioContextClass !== 'function') {
         return
       }
 
-      const playPromise = audio.play()
-      audio.pause()
-      audio.currentTime = 0
-      playPromise?.catch(() => {})
+      if (!audioContextRef.current) {
+        const audioContext = new AudioContextClass()
+        const gainNode = audioContext.createGain()
+
+        gainNode.gain.value = 0.5
+        gainNode.connect(audioContext.destination)
+
+        audioContextRef.current = audioContext
+        gainNodeRef.current = gainNode
+      }
+
+      const audioContext = audioContextRef.current
+
+      audioContext?.resume?.().catch(() => {})
+
+      if (audioBufferRef.current) {
+        return
+      }
+
+      try {
+        const response = await fetch(
+          src,
+          abortController ? { signal: abortController.signal } : undefined,
+        )
+
+        if (!response.ok) {
+          return
+        }
+
+        const arrayBuffer = await response.arrayBuffer()
+        const audioBuffer = await decodeAudioBuffer(audioContext, arrayBuffer)
+
+        if (!isDisposed) {
+          audioBufferRef.current = audioBuffer
+        }
+      } catch (error) {
+        if (error?.name === 'AbortError') {
+          return
+        }
+      }
     }
 
-    document.addEventListener('pointerdown', unlockAudio, { passive: true })
-    document.addEventListener('touchstart', unlockAudio, { passive: true })
+    document.addEventListener('pointerdown', initializeAudio, { passive: true })
 
     return () => {
-      document.removeEventListener('pointerdown', unlockAudio)
-      document.removeEventListener('touchstart', unlockAudio)
+      isDisposed = true
+      document.removeEventListener('pointerdown', initializeAudio)
+      abortController?.abort()
+
+      const audioContext = audioContextRef.current
+
+      audioBufferRef.current = null
+      gainNodeRef.current = null
+      audioContextRef.current = null
+
+      audioContext?.close?.().catch(() => {})
     }
   }, [src])
 
   const play = useCallback(() => {
-    const audio = audioRef.current
+    const audioContext = audioContextRef.current
+    const gainNode = gainNodeRef.current
+    const audioBuffer = audioBufferRef.current
 
-    if (!audio) {
+    if (!audioContext || !gainNode || !audioBuffer) {
       return
     }
 
-    audio.currentTime = 0
-    const playPromise = audio.play()
-    playPromise?.catch(() => {})
+    const sourceNode = audioContext.createBufferSource()
+
+    sourceNode.buffer = audioBuffer
+    sourceNode.connect(gainNode)
+
+    audioContext.resume?.().catch(() => {})
+    sourceNode.start(0)
   }, [])
 
   return play
